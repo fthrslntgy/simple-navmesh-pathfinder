@@ -13,12 +13,18 @@ public class MoveTo : MonoBehaviour
     {   
         goal = GameObject.Find("Goal").transform;
         agent = GetComponent<NavMeshAgent>();
+        agent.destination = goal.position;
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-            agent.destination = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (Input.GetMouseButton(0)) {
+            RaycastHit hit;
+            
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100)) {
+                agent.destination = hit.point;
+            }
+        }
         else
             agent.destination = goal.position;
     }
